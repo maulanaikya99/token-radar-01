@@ -1,0 +1,11 @@
+# make.fun kit and local secrets (never commit)
+token-radar-01-kit/
+makefun-keypair.json
+.env
+
+# local build output
+out/
+transcripts.tar.gz
+
+# node
+node_modules/

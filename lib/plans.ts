@@ -1,0 +1,322 @@
+// The farm playbook: one concrete position per protocol, written from the protocol's
+// category, chains and product rather than from a slogan. The model fills the capital,
+// the chain and the hold window; these lines carry the venue and the move.
+//
+// {capital} and {chain} are filled by lib/model.ts. Nothing here sets a value or a rank.
+
+export interface PlanRecord {
+  venue: string;
+  risk: string;
+  setup: string;
+  qualifying: string;
+  watch: string;
+  /** The asset step 1 funds, when the position is not USDC. */
+  asset?: string;
+  /** Step 1 in the protocol's own words, when USDC is not the funding asset. */
+  fund?: string;
+}
+
+export const PLAYBOOK: Record<string, PlanRecord> = {
+  'armitage-by-wintermute': {
+    venue: 'Morpho vaults curated by Wintermute',
+    risk: 'Curator risk: read the vault allocations and the collateral before depositing.',
+    setup: 'Supply {capital} USDC to a Morpho vault whose curator is Armitage by Wintermute on {chain} and keep the vault shares in the same wallet.',
+    qualifying: 'Borrow $30 of USDC against the position if the vault allows it, or add $25 to a second Armitage-curated vault.',
+    watch: 'Read the curator monthly allocation note and note every new vault it opens, because a new vault usually starts a points season.',
+  },
+  axis: {
+    venue: 'Axis basis vaults',
+    risk: 'Basis risk: funding can turn negative and shrink the vault return.',
+    setup: 'Mint Axis basis-vault shares with {capital} USDC on {chain} and hold the receipt token in the farming wallet.',
+    qualifying: 'Deposit $25 into a second Axis vault with a different maturity, or vote if a governance snapshot is open.',
+    watch: 'Check Axis vault maturity dates and roll an expiring position by hand instead of waiting for auto-renewal.',
+  },
+  b14g: {
+    asset: 'BTC',
+    fund: 'Bridge {capital} of BTC to B2 Network and keep it in a fresh B2 wallet; never reuse a wallet that holds long-term bitcoin.',
+    venue: 'b14g restaking on Babylon Genesis',
+    risk: 'Slashing and bridge risk on Bitcoin restaking; never restake BTC you may need quickly.',
+    setup: 'Restake the bridged BTC from step 1 through b14g on {chain} and delegate the position to a verified operator.',
+    qualifying: 'Delegate the restaked position to a second b14g operator so one validator cannot take the whole stake.',
+    watch: 'Track the Babylon epoch schedule and the b14g operator list before every epoch and move before an operator is removed.',
+  },
+  'bittensor-dtao': {
+    asset: 'TAO',
+    fund: 'Buy {capital} of TAO on an exchange, withdraw it to a Bittensor wallet and keep the seed phrase offline.',
+    venue: 'Bittensor dTAO subnet staking',
+    risk: 'Subnet emissions fall and alpha-token prices are volatile; stake only what you can leave for a quarter.',
+    setup: 'Buy TAO, withdraw it to a Bittensor wallet, then stake {capital} into one dTAO subnet pool whose emission share you checked.',
+    qualifying: 'Split $50 across a second subnet with a different validator so the wallet earns from two emission streams.',
+    watch: 'Watch subnet emission and validator take weekly; unstake and restake when a subnet emission halves.',
+  },
+  clearstar: {
+    venue: 'Clearstar curated lending',
+    risk: 'Curator and smart-contract risk: check collateral factors after every parameter change.',
+    setup: 'Supply {capital} USDC to a Clearstar-curated lending vault on {chain} through its own app and keep the receipt token.',
+    qualifying: 'Borrow $25 against the deposit to add a second action, then repay half after a week.',
+    watch: 'Read the Clearstar weekly risk note and withdraw if a collateral factor or an oracle changes.',
+  },
+  curvance: {
+    venue: 'Curvance lending markets',
+    risk: 'New-chain and liquidation risk; keep the loan well under the collateral limit.',
+    setup: 'Bridge {capital} USDC to Monad and supply it to Curvance USDC market on {chain}.',
+    qualifying: 'Borrow $25 of a correlated asset and supply it back so the wallet records both a supply and a borrow.',
+    watch: 'Track Curvance incentive epochs and claim only on the app page the protocol publishes.',
+  },
+  'doppler-finance': {
+    venue: 'Doppler CeDeFi vaults',
+    risk: 'CeDeFi counterparty and redemption-queue risk; ask how long a withdrawal takes.',
+    setup: 'Deposit {capital} USDC into a Doppler CeDeFi vault on {chain} and keep the receipt in the farming wallet.',
+    qualifying: 'Add $25 to Doppler vault on a second chain if the app lists one, so the wallet touches both venues.',
+    watch: 'Check the monthly attestation and the withdrawal queue before adding size.',
+  },
+  ember: {
+    venue: 'Ember tokenized yield',
+    risk: 'RWA issuer and NAV risk; the yield asset is only as good as its issuer.',
+    setup: 'Buy {capital} of Ember tokenized yield asset on {chain} and hold it in a fresh wallet.',
+    qualifying: 'Bridge $25 of the position to a second Ember chain with the official bridge and hold the local version.',
+    watch: 'Track Ember NAV updates and any new chain listing; redeem through the issuer page only.',
+  },
+  firelight: {
+    asset: 'FLR',
+    fund: 'Fund a fresh Flare wallet with {capital} of FLR and about $0.4 for gas, and keep the seed phrase offline.',
+    venue: 'Firelight insured staking on Flare',
+    risk: 'Coverage may not pay out and the cover pool carries smart-contract risk.',
+    setup: 'Mint Firelight insured staking receipt with {capital} of FLR or stXRP on {chain} and keep the receipt.',
+    qualifying: 'Add $20 to a second cover pool so the wallet holds two policies.',
+    watch: 'Read the monthly claim and coverage report before the policy window closes.',
+  },
+  'galaxy-curation': {
+    venue: 'Galaxy Curation vaults',
+    risk: 'Curator and vault-collateral risk; a curator can change allocation without asking you.',
+    setup: 'Supply {capital} USDC to a Galaxy Curation vault on {chain} through its app and keep the shares.',
+    qualifying: 'Add a $25 position on a second chain where Galaxy curates to widen the activity.',
+    watch: 'Follow Galaxy allocation updates and open the new vaults early, when points seasons usually start.',
+  },
+  'gami-labs': {
+    venue: 'Gami Labs curated vaults',
+    risk: 'Thin liquidity on some chains and curator risk on the rest.',
+    setup: 'Deposit {capital} USDC into a Gami Labs curated vault on {chain} and hold the receipt.',
+    qualifying: 'Add $25 to a Gami vault on a second chain, or vote on a Gami governance proposal if one is live.',
+    watch: 'Check the monthly curator report and leave any vault whose allocation you cannot explain.',
+  },
+  gauntlet: {
+    venue: 'Gauntlet curated Morpho and Aave vaults',
+    risk: 'Curator and liquidation risk; keep a health factor above 2 if you borrow.',
+    setup: 'Supply {capital} USDC to a Gauntlet-curated Morpho or Aave vault on {chain} and keep the vault shares.',
+    qualifying: 'Borrow $40 against the position and supply that to a second Gauntlet vault to record two venues.',
+    watch: 'Read Gauntlet risk dashboard and monthly parameter updates, and move when a market cap changes.',
+  },
+  'hive-protocol': {
+    asset: 'BTC',
+    fund: 'Bridge {capital} of BTC to B2 Network and keep it in a fresh B2 wallet; keep the seed phrase offline.',
+    venue: 'Hive Protocol on B2 Network',
+    risk: 'New Bitcoin L2 and bridge risk; test the exit path with a small amount first.',
+    setup: 'Deposit the bridged BTC into the Hive Protocol Bitcoin yield module on {chain} and hold the receipt token in the same wallet.',
+    qualifying: 'Move $25 of the position into a second Hive vault to test a second exit path.',
+    watch: 'Track the B2 bridge status and Hive TVL before adding size; a falling TVL is an exit signal.',
+  },
+  hyperithm: {
+    venue: 'Hyperithm curated vaults',
+    risk: 'Curator risk plus new-chain risk on Monad.',
+    setup: 'Supply {capital} USDC to a Hyperithm-curated vault on {chain} and hold the receipt token.',
+    qualifying: 'Add $25 on Arbitrum, where Hyperithm also curates, so the wallet has two chains.',
+    watch: 'Read the Hyperithm weekly note and the vault composition every Monday.',
+  },
+  infinifi: {
+    venue: 'infiniFi yield receipts',
+    risk: 'Leverage and liquidity risk inside the yield strategy; read the collateral ratio.',
+    setup: 'Deposit {capital} USDC into infiniFi on {chain} and mint its yield receipt in the same wallet.',
+    qualifying: 'Lock $25 in the longer-duration tranche if the app offers one, so the wallet has both durations.',
+    watch: 'Track the collateral ratio and the withdrawal queue and unwind if the ratio falls under 1.2.',
+  },
+  'k3-capital': {
+    venue: 'K3 Capital curated lending',
+    risk: 'Curator risk on a young chain; do not chase an uncapped vault.',
+    setup: 'Supply {capital} USDC to a K3 Capital-curated lending vault on {chain} and keep the receipt.',
+    qualifying: 'Borrow $25 of a stable asset and repay half after a week to add a borrow to the record.',
+    watch: 'Read the K3 monthly curator update and the vault caps before adding.',
+  },
+  keyrock: {
+    venue: 'Keyrock curated vaults',
+    risk: 'Counterparty and curator risk; a market maker vault is not a bank deposit.',
+    setup: 'Deposit {capital} USDC into a Keyrock-curated vault on {chain} and hold the shares.',
+    qualifying: 'Add $25 on a second chain where the same vault is open.',
+    watch: 'Check the Keyrock market-making and vault reports each month.',
+  },
+  lagoon: {
+    venue: 'Lagoon curated vaults',
+    risk: 'Vault curators can change strategy; read the fee, lockup and curator terms.',
+    setup: 'Deposit {capital} USDC into a Lagoon vault whose curator you can name on {chain} and hold the vault shares.',
+    qualifying: 'Add $25 to a second Lagoon vault with a different curator and a different chain.',
+    watch: 'Check each vault fee, lockup and curator before adding; leave a vault after a curator change.',
+  },
+  'lightning-network': {
+    asset: 'BTC',
+    fund: 'Fund a fresh Bitcoin wallet with {capital} of BTC and keep the seed phrase offline; the channel opens from this wallet.',
+    venue: 'Lightning channels and inbound liquidity',
+    risk: 'Channel force-closes and routing losses; never open one channel with all the capital.',
+    setup: 'Open a {capital} Lightning channel to a well-connected node from your own node on {chain}, or buy inbound liquidity from a provider you can verify.',
+    qualifying: 'Rebalance the channel once with a circular payment so both sides carry liquidity.',
+    watch: 'Monitor uptime and channel balance weekly and close channels that stay one-sided.',
+  },
+  lofty: {
+    venue: 'Lofty property tokens',
+    risk: 'Illiquid property tokens and issuer risk; resale can take weeks.',
+    setup: 'Buy {capital} of a Lofty property token on {chain} and hold it in a fresh Algorand wallet.',
+    qualifying: 'Buy a $25 second property token in another city to diversify the rent stream.',
+    watch: 'Track rent distributions and resale listings on the Lofty page; do not price a token from the last sale alone.',
+  },
+  'mezo-earn': {
+    asset: 'BTC',
+    fund: 'Bridge {capital} of BTC to Mezo and keep it in a fresh Mezo wallet; keep the seed phrase offline.',
+    venue: 'Mezo Earn vaults',
+    risk: 'New chain and lockup risk; keep the unlocked share above half.',
+    setup: 'Bridge {capital} of BTC or USDC to Mezo and deposit into a Mezo Earn vault on {chain}.',
+    qualifying: 'Lock $25 for the longer boost multiplier if the vault offers one.',
+    watch: 'Track the Mezo boost epochs and claim on the official page only.',
+  },
+  noble: {
+    venue: 'Noble native USDC',
+    risk: 'Cosmos IBC and validator risk; keep funds on the venue you can exit.',
+    setup: 'Mint native USDC on Noble through the official transfer route and supply {capital} to a lending or vault app built on {chain}.',
+    qualifying: 'Move $25 of USDC across two Cosmos venues so the wallet shows activity on the chain.',
+    watch: 'Track the Noble validator set and any points program announced by the chain itself.',
+  },
+  'nonce-capital': {
+    venue: 'Nonce Capital curated vaults',
+    risk: 'Curator and smart-contract risk; check the vault collateral on both chains.',
+    setup: 'Supply {capital} USDC to a Nonce Capital-curated vault on {chain} and keep the shares.',
+    qualifying: 'Add $25 on Optimism, where Nonce also curates, to record a second chain.',
+    watch: 'Read the Nonce weekly risk note and the vault allocation changes.',
+  },
+  onre: {
+    venue: 'OnRe reinsurance pools on Solana',
+    risk: 'Insurance losses can hit principal; size the position like a risky bond.',
+    setup: 'Deposit {capital} USDC into an OnRe reinsurance pool on {chain} and hold the receipt.',
+    qualifying: 'Add $25 to a second pool or lock the position for the longer term if the app offers it.',
+    watch: 'Read the OnRe loss and reserve reports each month before adding size.',
+  },
+  opentrade: {
+    venue: 'OpenTrade tokenized treasury',
+    risk: 'Issuer and redemption risk; check who holds the underlying bill.',
+    setup: 'Buy {capital} of the OpenTrade tokenized treasury product on {chain} and hold it.',
+    qualifying: 'Bridge $25 of the position to a second OpenTrade chain and hold the local version.',
+    watch: 'Track yield accrual and redemption windows; redeem through the issuer page.',
+  },
+  'plume-vaults': {
+    venue: 'Plume RWA vaults',
+    risk: 'RWA issuer and liquidity risk; match the vault maturity to your horizon.',
+    setup: 'Deposit {capital} USDC into a Plume Vault on {chain} and keep the vault shares.',
+    qualifying: 'Add $25 to a second vault backed by a different RWA issuer.',
+    watch: 'Check the vault underlying issuer and maturity every month.',
+  },
+  r25: {
+    venue: 'R25 yield-bearing stable',
+    risk: 'Peg and issuer risk; a stable can trade below its mint value.',
+    setup: 'Mint the R25 yield-bearing stable with {capital} USDC on {chain} and hold it in the farming wallet.',
+    qualifying: 'Bridge $25 to a second R25 chain and mint there to spread chain activity.',
+    watch: 'Track the R25 collateral and peg on its own page; exit if the peg slips two days running.',
+  },
+  'reti-pooling': {
+    asset: 'ALGO',
+    fund: 'Fund a fresh Algorand wallet with {capital} of ALGO and keep the seed phrase offline.',
+    venue: 'Reti staking pools on Algorand',
+    risk: 'Validator performance and commission changes affect the return.',
+    setup: 'Stake {capital} of ALGO through a Reti Pooling pool on {chain} and keep the pool receipt.',
+    qualifying: 'Delegate a $25 slice to a second Reti pool operator to spread validator risk.',
+    watch: 'Check pool performance and commission monthly and move if a pool lags two months.',
+  },
+  rockawayx: {
+    venue: 'RockawayX curated vaults',
+    risk: 'Curator risk across several chains; check each chain separately.',
+    setup: 'Supply {capital} USDC to a RockawayX-curated vault on {chain} and hold the shares.',
+    qualifying: 'Add $25 on a second chain where RockawayX curates.',
+    watch: 'Read the monthly allocation note and leave a chain whose vault caps fall.',
+  },
+  saturn: {
+    venue: 'Saturn stable wrapper',
+    risk: 'Peg and wrapper-contract risk; test the redeem path with a small amount.',
+    setup: 'Mint the Saturn wrapped stable with {capital} of USDC on {chain} and hold the wrapper.',
+    qualifying: 'Move $25 of the wrapper to a second chain and back once to test the route.',
+    watch: 'Track the peg and the redemption liquidity every week.',
+  },
+  'steakhouse-financial': {
+    venue: 'Steakhouse curated Morpho vaults',
+    risk: 'Curator and liquidation risk; do not borrow against a thin market.',
+    setup: 'Supply {capital} USDC to a Steakhouse-curated Morpho vault on {chain} and keep the vault shares.',
+    qualifying: 'Borrow $40 against the position and supply that to a second Steakhouse vault.',
+    watch: 'Read the Steakhouse monthly curator letter and the vault allocations before adding size.',
+  },
+  symbiotic: {
+    asset: 'wstETH',
+    fund: 'Fund a fresh Ethereum wallet with {capital} of wstETH and about $12 for gas, and keep the seed phrase offline.',
+    venue: 'Symbiotic restaking vaults',
+    risk: 'Slashing and restaking risk; a vault operator can lose part of the collateral.',
+    setup: 'Deposit {capital} of wstETH or another supported collateral into a Symbiotic vault on {chain} and delegate to a curator.',
+    qualifying: 'Add $25 to a second vault with a different operator so one slashing event cannot hit everything.',
+    watch: 'Track operator performance and slashing events weekly.',
+  },
+  'tori-finance': {
+    venue: 'Tori basis vaults',
+    risk: 'Basis and funding-rate risk; a negative funding week can erase a month of yield.',
+    setup: 'Deposit {capital} USDC into a Tori basis vault on {chain} and hold the receipt.',
+    qualifying: 'Add $25 to a different maturity or vote in the protocol governance.',
+    watch: 'Watch funding rates and the vault maturity, and roll before the expiry week.',
+  },
+  'tulipa-capital': {
+    venue: 'Tulipa Capital curated vaults',
+    risk: 'Curator risk across Ethereum, Base and Berachain.',
+    setup: 'Supply {capital} USDC to a Tulipa-curated vault on {chain} and keep the shares.',
+    qualifying: 'Add $25 on Berachain, where Tulipa also curates, to record a second chain.',
+    watch: 'Read the Tulipa curator updates and check the vault collateral monthly.',
+  },
+  tydro: {
+    venue: 'Tydro lending on Ink',
+    risk: 'New-chain liquidity risk; keep the loan small and the health factor high.',
+    setup: 'Bridge {capital} USDC to Ink and supply it to the Tydro USDC market on {chain}.',
+    qualifying: 'Borrow $25 of a stable asset and repay half after a week.',
+    watch: 'Track Tydro incentives and supply caps, and claim only in the app.',
+  },
+  upshift: {
+    venue: 'Upshift curated vaults',
+    risk: 'Allocator and vault risk; the curator decides where the capital sits.',
+    setup: 'Deposit {capital} USDC into an Upshift vault on {chain} and hold the vault shares.',
+    qualifying: 'Add $25 to a second Upshift vault on a different chain.',
+    watch: 'Check vault fees and curator changes every month.',
+  },
+  usdd: {
+    asset: 'USDT',
+    fund: 'Fund a fresh Tron wallet with {capital} of USDT and about $2 for gas, and keep the seed phrase offline.',
+    venue: 'USDD CDP on Tron',
+    risk: 'Stablecoin peg and liquidation risk; keep the position over-collateralized.',
+    setup: 'Mint {capital} of USDD against USDT or TRX on Tron through the official CDP app on {chain}.',
+    qualifying: 'Stake the USDD in the savings module for a week, then unstake half.',
+    watch: 'Watch the collateral ratio and the peg daily; repay if the ratio falls under 1.5.',
+  },
+  valos: {
+    venue: 'Valos RWA vaults',
+    risk: 'Issuer and new-chain risk on Monad.',
+    setup: 'Deposit {capital} USDC into a Valos RWA vault on {chain} and hold the receipt.',
+    qualifying: 'Add $25 to a second vault with a different issuer.',
+    watch: 'Track NAV and redemption windows every month.',
+  },
+  veda: {
+    venue: 'Veda BoringVaults',
+    risk: 'Allocator and smart-contract risk; the vault can rebalance without notice.',
+    setup: 'Deposit {capital} USDC into a Veda BoringVault on {chain} and hold the shares.',
+    qualifying: 'Add $25 to a second Veda vault on another chain.',
+    watch: 'Check the vault curator and fee schedule monthly.',
+  },
+  'yuzu-money': {
+    venue: 'Yuzu Money yield receipts',
+    risk: 'Yield-strategy and new-chain risk; check the withdrawal queue.',
+    setup: 'Deposit {capital} USDC into Yuzu Money on {chain} and mint its yield receipt.',
+    qualifying: 'Add $25 on a second Yuzu chain if the app lists one.',
+    watch: 'Track the collateral ratio and the withdrawal queue weekly.',
+  },
+};
+
+export function planRecord(slug: string): PlanRecord | undefined {
+  return PLAYBOOK[slug];
+}
